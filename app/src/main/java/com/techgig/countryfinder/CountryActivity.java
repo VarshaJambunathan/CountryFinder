@@ -39,10 +39,10 @@ public class CountryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_country);
 
         mCountryNames = new ArrayList<>();
-        mCountryNames.add(new Country("India", "IN", "New Delhi", "Hindi"));
+      /*  mCountryNames.add(new Country("India", "IN", "New Delhi", "Hindi"));
         mCountryNames.add(new Country("Israel", "IN", "New Delhi", "Hindi"));
         mCountryNames.add(new Country("United States", "IN", "New Delhi", "Hindi"));
-
+*/
         //Country RecyclerView
         mCountryView = (RecyclerView) findViewById(R.id.country_view);
         mCountryView.setHasFixedSize(true);
