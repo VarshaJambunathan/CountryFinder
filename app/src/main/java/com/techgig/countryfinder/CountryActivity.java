@@ -58,7 +58,7 @@ public class CountryActivity extends AppCompatActivity {
         loadCountries(mCountryNames);
     }
 
-    private ArrayList<Country> loadCountries (ArrayList<Country> countries) {
+    private ArrayList<Country> loadCountries (final ArrayList<Country> countries) {
         progressBar.setVisibility(View.VISIBLE);
 
         //Creating a new StringRequest
@@ -130,7 +130,11 @@ public class CountryActivity extends AppCompatActivity {
                                 JSONArray ccArray = each_country.getJSONArray("callingCodes");
                                 String callingcode = ccArray.getString(0);
 
-                                Country country = new Country (name, )
+                                Country country = new Country (name, capital, callingcode, alphacode, region, subregion,
+                                        population, lat, lng, timezones, borders, nativename, numericcode, languages, flag,
+                                        cur_code, cur_name, cur_symbol);
+
+                                countries.add(country);
 
                             }
 
