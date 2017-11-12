@@ -18,6 +18,8 @@ public class SplashActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        getSupportActionBar().hide();
+
         mSearchCountry = (TextView)findViewById(R.id.search_country);
 
         new Handler().postDelayed(new Runnable() {
@@ -25,8 +27,8 @@ public class SplashActivity extends AppCompatActivity
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app register activity for a new user
-                //Intent login = new Intent(SplashActivity.this, LoginActivity.class);
-                //startActivity(login);
+                Intent login = new Intent(SplashActivity.this, CountryActivity.class);
+                startActivity(login);
 
                 //Else handle the cookies/preferences to navigate to app main activity
                 //Code here!
