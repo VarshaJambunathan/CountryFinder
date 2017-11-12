@@ -20,6 +20,7 @@ import com.techgig.countryfinder.Beans.Country;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -70,6 +71,18 @@ public class CountryActivity extends AppCompatActivity {
 
                         try {
                             JSONArray root = new JSONArray(response);
+
+                            for(int i=0; i< root.length(); i++) {
+
+                                JSONObject each_country = root.getJSONObject(i);
+                                String name = each_country.getString("name");
+
+                                String capital = each_country.getString("capital");
+
+
+
+
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
