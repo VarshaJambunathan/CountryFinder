@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.techgig.countryfinder.SplashActivity">
-
+    tools:context="com.techgig.countryfinder.SplashActivity"
+    android:background="@color/colorLightBlue"
+    >
+    <ImageView
+        android:layout_width="@dimen/dimen_capital_icon_width"
+        android:layout_height="@dimen/dimen_capital_icon_height"
+        android:layout_centerInParent="true"
+        android:id="@+id/country_name"
+        android:src="@drawable/ic_launcher_foreground"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/search_country"
+        android:text="Country Finder"
+        android:layout_below="@id/country_name"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
         />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

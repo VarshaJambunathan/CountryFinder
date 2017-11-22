@@ -9,24 +9,24 @@ import java.util.ArrayList;
 
 public class Country implements Serializable
 {
-   String name;
-   String capital;
-   String callingcode;
-   String alphacode;
-   String region;
-   String subregion;
-   long population;
-   double latitude;
-   double longitude;
-   ArrayList<String> timezones;
-   ArrayList<String> borders;
-   String nativename;
-   String numericcode;
-   ArrayList<String> languages;
-   String flag;
-   String cur_code;
-   String cur_name;
-   String cur_symbol;
+   private String name;
+   private String capital;
+   private String callingcode;
+   private String alphacode;
+   private String region;
+   private String subregion;
+   private long population;
+   private double latitude;
+   private double longitude;
+   private ArrayList<String> timezones;
+   private ArrayList<String> borders;
+   private String nativename;
+   private String numericcode;
+   private ArrayList<String> languages;
+   private String flag;
+   private String cur_code;
+   private String cur_name;
+   private String cur_symbol;
 
     public Country(String name, String capital, String callingcode, String alphacode, String region, String subregion,
                    long population, double latitude, double longitude, ArrayList<String> timezones, ArrayList<String> borders,

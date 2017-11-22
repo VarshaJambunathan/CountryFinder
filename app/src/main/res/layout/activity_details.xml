@@ -4,10 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.techgig.countryfinder.DetailsActivity">
+    tools:context="com.techgig.countryfinder.DetailsActivity"
+    android:background="@drawable/border"
+    android:layout_margin="10dp">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sampleText"/>
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:id="@+id/details_view"
+        >
+    </android.support.v7.widget.RecyclerView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sample"/>
+
+
 </RelativeLayout>

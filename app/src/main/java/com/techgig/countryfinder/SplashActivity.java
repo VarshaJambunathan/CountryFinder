@@ -9,7 +9,6 @@ import android.widget.TextView;
 public class SplashActivity extends AppCompatActivity
 {
 
-    private TextView mSearchCountry;
     private static int SPLASH_TIME_OUT = 750;
 
     @Override
@@ -19,8 +18,6 @@ public class SplashActivity extends AppCompatActivity
         setContentView(R.layout.activity_splash);
 
         getSupportActionBar().hide();
-
-        mSearchCountry = (TextView)findViewById(R.id.search_country);
 
         new Handler().postDelayed(new Runnable() {
             @Override

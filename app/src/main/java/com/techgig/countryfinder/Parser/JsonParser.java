@@ -83,7 +83,7 @@ public class JsonParser {
                         population, lat, lng, timezones, borders, nativename, numericcode, languages, flag,
                         cur_code, cur_name, cur_symbol);
 
-                //mCountryNames.add(country);
+                //mCountryNames.add(country_layout);
                 //mCountryAdapter.notifyDataSetChanged();
             }
 

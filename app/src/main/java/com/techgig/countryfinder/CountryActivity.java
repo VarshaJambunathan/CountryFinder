@@ -1,12 +1,13 @@
 package com.techgig.countryfinder;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.app.ProgressDialog;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -30,20 +31,20 @@ import java.util.ArrayList;
 
 public class CountryActivity extends AppCompatActivity {
 
-    static ArrayList<Country> mNamess;
+    static ArrayList<Country> mCountryNames;
     static ArrayList<Names> mNames;
     private RecyclerView mCountryView;
     private RecyclerView.LayoutManager mCountryLayoutManager;
     static RecyclerView.Adapter mCountryAdapter;
-    ProgressBar progressBar;
     static final String TAG = CountryActivity.class.getName();
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_country);
 
-        mNamess = new ArrayList<>();
+        mCountryNames = new ArrayList<>();
         mNames = new ArrayList<>();
 
         //Country RecyclerView
@@ -51,7 +52,8 @@ public class CountryActivity extends AppCompatActivity {
         mCountryView.setHasFixedSize(true);
         mCountryLayoutManager = new LinearLayoutManager(this);
         mCountryView.setLayoutManager(mCountryLayoutManager);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading . . .");
 
         //Check internet permission
         if(CheckInternet.isNetworkAvailable(this)) {
@@ -60,19 +62,21 @@ public class CountryActivity extends AppCompatActivity {
             mCountryView.setAdapter(mCountryAdapter);
 
         } else {
-            Toast.makeText(this, "Please try again later.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Internet Unavailable.", Toast.LENGTH_SHORT).show();
+
+            //Read data from file
         }
+
     }
 
     private void loadCountries () {
-        progressBar.setVisibility(View.VISIBLE);
 
         //Creating a new StringRequest to get Names
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Config.CountryNameUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        progressDialog.dismiss();
 
                         Log.e(TAG, response);
                         mNames = ParseCountryNames(response);
@@ -84,9 +88,11 @@ public class CountryActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //displaying the error in toast if occurrs
+                        //displaying the error in toast if occurs
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, error.getMessage());
+                        progressDialog.dismiss();
+
                     }
                 }
         );
@@ -96,6 +102,7 @@ public class CountryActivity extends AppCompatActivity {
 
         //adding the string request to request queue
         requestQueue.add(stringRequest);
+        progressDialog.show();
 
     }
 
