@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.app.ProgressDialog;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -20,13 +18,11 @@ import com.techgig.countryfinder.Adapters.CountryAdapter;
 import com.techgig.countryfinder.Beans.Country;
 import com.techgig.countryfinder.Beans.Names;
 import com.techgig.countryfinder.CheckPermissions.CheckInternet;
-import com.techgig.countryfinder.Parser.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.Permission;
 import java.util.ArrayList;
 
 public class CountryActivity extends AppCompatActivity {

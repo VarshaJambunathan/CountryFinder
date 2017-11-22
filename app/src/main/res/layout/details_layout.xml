@@ -23,8 +23,7 @@
         android:layout_height="wrap_content"
         android:text="Value"
         android:textSize="17dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorBlack"
+         android:textColor="@color/colorBlack"
         android:id="@+id/country_value"
         android:layout_weight="1"
         />

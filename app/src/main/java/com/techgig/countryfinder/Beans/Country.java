@@ -1,7 +1,10 @@
 package com.techgig.countryfinder.Beans;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Varsha on 11-11-2017.
@@ -123,5 +126,54 @@ public class Country implements Serializable
 
     public String getCur_symbol() {
         return cur_symbol;
+    }
+
+    public static HashMap<String, String> returnHashPairs(Country country) {
+        HashMap<String, String> mEachCountry = new HashMap<>();
+
+        mEachCountry.put("Name", country.getName());
+        mEachCountry.put("Capital", country.getCapital());
+        mEachCountry.put("Calling Code", country.getCallingcode());
+        mEachCountry.put("Alpha Code", country.getAlphacode());
+        mEachCountry.put("Region", country.getRegion());
+        mEachCountry.put("Sub Region", country.getSubregion());
+        mEachCountry.put("Population", Long.toString(country.getPopulation()));
+        mEachCountry.put("Latitude", Double.toString(country.getLatitude()));
+        mEachCountry.put("Longitude", Double.toString(country.getLongitude()));
+        mEachCountry.put("Native name", country.getNativename());
+        mEachCountry.put("Numeric code", country.getNumericcode());
+        mEachCountry.put("Flag", country.getFlag());
+        mEachCountry.put("Currency code", country.getCur_code());
+        mEachCountry.put("Currency name", country.getCur_name());
+        mEachCountry.put("Currency symbol", country.getCur_symbol());
+
+        //Timezones
+        StringBuilder mTimezones = new StringBuilder();
+        for (String i: country.getTimezones()) {
+            mTimezones.append(i);
+            mTimezones.append(", ");
+        }
+        mEachCountry.put("Timezones", mTimezones.toString());
+        Log.e("Country Timezones", mTimezones.toString());
+
+        //Borders
+        StringBuilder mBorders = new StringBuilder();
+        for (String i: country.getBorders()) {
+            mBorders.append(i);
+            mBorders.append(", ");
+        }
+        mEachCountry.put("Borders", mBorders.toString());
+        Log.e("Country Borders", mBorders.toString());
+
+        //Borders
+        StringBuilder mLanguages = new StringBuilder();
+        for (String i: country.getLanguages()) {
+            mLanguages.append(i);
+            mLanguages.append(", ");
+        }
+        mEachCountry.put("Languages", mLanguages.toString());
+        Log.e("Country Languages", mLanguages.toString());
+
+        return mEachCountry;
     }
 }
