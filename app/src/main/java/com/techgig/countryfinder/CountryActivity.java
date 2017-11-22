@@ -17,21 +17,25 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.techgig.countryfinder.Adapters.CountryAdapter;
 import com.techgig.countryfinder.Beans.Country;
+import com.techgig.countryfinder.Beans.Names;
+import com.techgig.countryfinder.CheckPermissions.CheckInternet;
+import com.techgig.countryfinder.Parser.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.Permission;
 import java.util.ArrayList;
 
 public class CountryActivity extends AppCompatActivity {
 
-    private ArrayList<Country> mCountryNames;
+    static ArrayList<Country> mNamess;
+    static ArrayList<Names> mNames;
     private RecyclerView mCountryView;
     private RecyclerView.LayoutManager mCountryLayoutManager;
-    private RecyclerView.Adapter mCountryAdapter;
+    static RecyclerView.Adapter mCountryAdapter;
     ProgressBar progressBar;
-    public static final String JSON_URL = "https://restcountries.eu/rest/v2/all";
     static final String TAG = CountryActivity.class.getName();
 
     @Override
@@ -39,11 +43,9 @@ public class CountryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_country);
 
-        mCountryNames = new ArrayList<>();
-      /*  mCountryNames.add(new Country("India", "IN", "New Delhi", "Hindi"));
-        mCountryNames.add(new Country("Israel", "IN", "New Delhi", "Hindi"));
-        mCountryNames.add(new Country("United States", "IN", "New Delhi", "Hindi"));
-*/
+        mNamess = new ArrayList<>();
+        mNames = new ArrayList<>();
+
         //Country RecyclerView
         mCountryView = (RecyclerView) findViewById(R.id.country_view);
         mCountryView.setHasFixedSize(true);
@@ -51,96 +53,31 @@ public class CountryActivity extends AppCompatActivity {
         mCountryView.setLayoutManager(mCountryLayoutManager);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        mCountryAdapter =  new CountryAdapter(mCountryNames);
-        mCountryView.setAdapter(mCountryAdapter);
-
         //Check internet permission
-        loadCountries(mCountryNames);
+        if(CheckInternet.isNetworkAvailable(this)) {
+            loadCountries();
+            mCountryAdapter =  new CountryAdapter(this, mNames);
+            mCountryView.setAdapter(mCountryAdapter);
+
+        } else {
+            Toast.makeText(this, "Please try again later.", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private ArrayList<Country> loadCountries (final ArrayList<Country> countries) {
+    private void loadCountries () {
         progressBar.setVisibility(View.VISIBLE);
 
-        //Creating a new StringRequest
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, JSON_URL,
+        //Creating a new StringRequest to get Names
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Config.CountryNameUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progressBar.setVisibility(View.INVISIBLE);
 
                         Log.e(TAG, response);
+                        mNames = ParseCountryNames(response);
+                        mCountryAdapter.notifyDataSetChanged();
 
-                        try {
-                            JSONArray root = new JSONArray(response);
-
-                            for(int i=0; i< root.length(); i++) {
-
-                                JSONObject each_country = root.getJSONObject(i);
-
-                                String name = each_country.getString("name");
-                                String capital = each_country.getString("capital");
-                                String alphacode = each_country.getString("alpha3Code");
-                                String region = each_country.getString("region");
-                                String subregion= each_country.getString("subregion");
-                                long population = each_country.getLong("population");
-                                String numericcode= each_country.getString("numericCode");
-                                String nativename= each_country.getString("nativeName");
-                                //String = each_country.getString("");
-
-                                ArrayList<String> borders= new ArrayList<>();
-                                JSONArray bordersArray = each_country.getJSONArray("borders");
-                                for(int j=0; j< bordersArray.length(); j++) {
-
-                                    String each_border = bordersArray.getString(j);
-                                    //Log.e(TAG, each_border);
-                                    borders.add(each_border);
-
-                                }
-                                //Log.e(TAG, name + " " + capital + " " + population);
-
-                                JSONArray jsonLatLng = each_country.getJSONArray("latlng");
-                                double lat = jsonLatLng.getDouble(0);
-                                double lng = jsonLatLng.getDouble(1);
-
-                                ArrayList<String> timezones = new ArrayList<>();
-                                JSONArray timezoneArray = each_country.getJSONArray("timezones");
-                                for(int j=0; j< timezoneArray.length(); j++) {
-
-                                    String each_timezone = timezoneArray.getString(j);
-                                    timezones.add(each_timezone);
-                                }
-
-                                ArrayList<String> languages = new ArrayList<>();
-                                JSONArray languageArray = each_country.getJSONArray("languages");
-                                for(int j=0; j< languageArray.length(); j++) {
-
-                                    JSONObject jsonLanguage = languageArray.getJSONObject(j);
-                                    String each_language = jsonLanguage.getString("name");
-                                    languages.add(each_language);
-                                }
-
-                                String flag = each_country.getString("flag");
-
-                                JSONArray currenciesArray = each_country.getJSONArray("currencies");
-                                JSONObject jsonCur = currenciesArray.getJSONObject(0);
-                                String cur_code = jsonCur.getString("code");
-                                String cur_name = jsonCur.getString("name");
-                                String cur_symbol = jsonCur.getString("symbol");
-
-                                JSONArray ccArray = each_country.getJSONArray("callingCodes");
-                                String callingcode = ccArray.getString(0);
-
-                                Country country = new Country (name, capital, callingcode, alphacode, region, subregion,
-                                        population, lat, lng, timezones, borders, nativename, numericcode, languages, flag,
-                                        cur_code, cur_name, cur_symbol);
-
-                                countries.add(country);
-
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                     }
                 },
 
@@ -160,6 +97,32 @@ public class CountryActivity extends AppCompatActivity {
         //adding the string request to request queue
         requestQueue.add(stringRequest);
 
-        return countries;
     }
+
+    private static ArrayList<Names> ParseCountryNames(String response) {
+
+        try {
+
+            JSONArray root = new JSONArray(response);
+
+            for(int i=0; i< root.length(); i++) {
+
+                JSONObject each_country = root.getJSONObject(i);
+
+                String name = each_country.getString("name");
+                String flagString = each_country.getString("flag");
+
+                Names each_name = new Names(name, flagString);
+                mNames.add(each_name);
+                mCountryAdapter.notifyDataSetChanged();
+            }
+
+        } catch(JSONException e){
+            Log.e("JSONException:Names", e.toString());
+        }
+
+        return mNames;
+
+    }
+
 }

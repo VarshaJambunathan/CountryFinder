@@ -1,5 +1,7 @@
 package com.techgig.countryfinder.Adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.techgig.countryfinder.Beans.Country;
+import com.techgig.countryfinder.Beans.Names;
+import com.techgig.countryfinder.CountryActivity;
+import com.techgig.countryfinder.DetailsActivity;
 import com.techgig.countryfinder.R;
 
 import java.util.ArrayList;
@@ -17,10 +22,12 @@ import java.util.ArrayList;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHolder> {
 
-    private ArrayList<Country> mCountryNames;
+    private ArrayList<Names> mNames;
+    private Context context;
 
-    public CountryAdapter(ArrayList<Country> mCountryNames) {
-        this.mCountryNames = mCountryNames;
+    public CountryAdapter(Context context, ArrayList<Names> mNames) {
+        this.mNames = mNames;
+        this.context = context;
     }
 
     @Override
@@ -33,22 +40,31 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mCountryName.setText(mCountryNames.get(position).getName());
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        holder.countryName.setText(mNames.get(position).getName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailsActivity.class);
+                intent.putExtra("EachCountry", mNames.get(holder.getAdapterPosition()));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return mCountryNames.size() ;
+        return mNames.size() ;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mCountryName;
+        public TextView countryName;
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mCountryName = (TextView) itemView.findViewById(R.id.country_name);
+            countryName = itemView.findViewById(R.id.country_name);
         }
     }
 }

@@ -9,16 +9,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="Varun"
-            android:textColor="@color/colorBlack"
-            android:textSize="20sp"
-            android:id="@+id/country_name"
-            android:textStyle="bold"
-            />
+            >
+            <ImageView
+                android:layout_width="@dimen/dimen_capital_icon_width"
+                android:layout_height="@dimen/dimen_capital_icon_height"
+                android:src="@mipmap/ic_launcher"
+                android:id="@+id/country_icon"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Varun"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"
+                android:id="@+id/country_name"
+                android:layout_toRightOf="@id/country_icon"
+                android:textStyle="bold"
+                />
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
 </RelativeLayout>
