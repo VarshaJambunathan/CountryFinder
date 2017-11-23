@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Varsha on 11-11-2017.
@@ -128,33 +129,37 @@ public class Country implements Serializable
         return cur_symbol;
     }
 
-    public static HashMap<String, String> returnHashPairs(Country country) {
-        HashMap<String, String> mEachCountry = new HashMap<>();
+    public static ArrayList<Names> returnHashPairs(Country country) {
+        ArrayList<Names> mEachCountry = new ArrayList<>();
 
-        mEachCountry.put("Name", country.getName());
-        mEachCountry.put("Capital", country.getCapital());
-        mEachCountry.put("Calling Code", country.getCallingcode());
-        mEachCountry.put("Alpha Code", country.getAlphacode());
-        mEachCountry.put("Region", country.getRegion());
-        mEachCountry.put("Sub Region", country.getSubregion());
-        mEachCountry.put("Population", Long.toString(country.getPopulation()));
-        mEachCountry.put("Latitude", Double.toString(country.getLatitude()));
-        mEachCountry.put("Longitude", Double.toString(country.getLongitude()));
-        mEachCountry.put("Native name", country.getNativename());
-        mEachCountry.put("Numeric code", country.getNumericcode());
-        mEachCountry.put("Flag", country.getFlag());
-        mEachCountry.put("Currency code", country.getCur_code());
-        mEachCountry.put("Currency name", country.getCur_name());
-        mEachCountry.put("Currency symbol", country.getCur_symbol());
+        mEachCountry.add(new Names("Name", country.getName()));
+        mEachCountry.add(new Names("Capital", country.getCapital()));
+        mEachCountry.add(new Names("Calling Code", country.getCallingcode()));
+        mEachCountry.add(new Names("Alpha Code", country.getAlphacode()));
+        mEachCountry.add(new Names("Region", country.getRegion()));
+        mEachCountry.add(new Names("Sub Region", country.getSubregion()));
+        mEachCountry.add(new Names("Population", Long.toString(country.getPopulation())));
+        mEachCountry.add(new Names("Latitude", Double.toString(country.getLatitude())));
+        mEachCountry.add(new Names("Longitude", Double.toString(country.getLongitude())));
+        mEachCountry.add(new Names("Native name", country.getNativename()));
+        mEachCountry.add(new Names("Numeric code", country.getNumericcode()));
+        mEachCountry.add(new Names("Flag", country.getFlag()));
+        mEachCountry.add(new Names("Currency code", country.getCur_code()));
+        mEachCountry.add(new Names("Currency name", country.getCur_name()));
+        mEachCountry.add(new Names("Currency symbol", country.getCur_symbol()));
 
         //Timezones
-        StringBuilder mTimezones = new StringBuilder();
-        for (String i: country.getTimezones()) {
-            mTimezones.append(i);
-            mTimezones.append(", ");
+        /*
+        if(country.getTimezones().size() > 1) {
+            StringBuilder mTimezones = new StringBuilder();
+            for (String i: country.getTimezones()) {
+                mTimezones.append(i);
+                mTimezones.append("\n ");
+            }
         }
-        mEachCountry.put("Timezones", mTimezones.toString());
-        Log.e("Country Timezones", mTimezones.toString());
+
+        mEachCountry.add(new Names("Timezones", country.getTimezones().get(0)));
+        //Log.e("Country Timezones", mTimezones.toString());
 
         //Borders
         StringBuilder mBorders = new StringBuilder();
@@ -162,7 +167,7 @@ public class Country implements Serializable
             mBorders.append(i);
             mBorders.append(", ");
         }
-        mEachCountry.put("Borders", mBorders.toString());
+        mEachCountry.add(new Names("Borders", mBorders.toString()));
         Log.e("Country Borders", mBorders.toString());
 
         //Borders
@@ -171,8 +176,14 @@ public class Country implements Serializable
             mLanguages.append(i);
             mLanguages.append(", ");
         }
-        mEachCountry.put("Languages", mLanguages.toString());
+        mEachCountry.add(new Names("Languages", mLanguages.toString()));
         Log.e("Country Languages", mLanguages.toString());
+        */
+
+        //mEachCountry.add(new Names("Timezones", country.getTimezones().get(0)));
+        //mEachCountry.add(new Names("Borders", country.getBorders().get(0)));
+        //mEachCountry.add(new Names("Languages", country.getLanguages().get(0)));
+
 
         return mEachCountry;
     }

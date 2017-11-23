@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,7 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.techgig.countryfinder.Adapters.CountryAdapter;
+import com.techgig.countryfinder.Adapters.DetailsAdapter;
 import com.techgig.countryfinder.Beans.Country;
 import com.techgig.countryfinder.Beans.Names;
 import com.techgig.countryfinder.CheckPermissions.CheckInternet;
@@ -24,15 +26,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = DetailsActivity.class.getName();
     TextView mSample;
     ProgressDialog progressDialog;
-    private HashMap<String, String> countryHashMap;
+    private RecyclerView mDetailsView;
+    private RecyclerView.LayoutManager mDetailsLayoutManager;
+    private RecyclerView.Adapter mDetailsAdapter;
+    private ArrayList<Names> mDetailsNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,10 @@ public class DetailsActivity extends AppCompatActivity {
         mSample = findViewById(R.id.sample);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading . . . ");
+        mDetailsView = (RecyclerView) findViewById(R.id.details_view);
+        mDetailsView.setHasFixedSize(true);
+        mDetailsLayoutManager = new LinearLayoutManager(this);
+        mDetailsView.setLayoutManager(mDetailsLayoutManager);
 
         Intent intent = getIntent();
         if(intent != null) {
@@ -166,20 +173,11 @@ public class DetailsActivity extends AppCompatActivity {
                     population, lat, lng, timezones, borders, nativename, numericcode, languages, flag,
                     cur_code, cur_name, cur_symbol);
 
-            countryHashMap = Country.returnHashPairs(country);
-            StringBuilder data = new StringBuilder();
+            mDetailsNames = Country.returnHashPairs(country);
 
-            Iterator countryDetailsIterator = countryHashMap.keySet().iterator();
-            while(countryDetailsIterator.hasNext()){
-                String key = (String) countryDetailsIterator.next();
-                String value = (String) countryHashMap.get(key);
-                data.append(key);
-                data.append(" ");
-                data.append(value);
-                data.append("\n");
-            }
-            Log.e("HashMapData", data.toString());
-            mSample.setText(data.toString());
+            //Set DetailsAdapter
+            mDetailsAdapter =  new DetailsAdapter(mDetailsNames);
+            mDetailsView.setAdapter(mDetailsAdapter);
 
         } catch( JSONException e){
             Log.e("DetailsJsonParsing", e.toString());

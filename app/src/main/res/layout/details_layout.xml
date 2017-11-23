@@ -3,28 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="2"
     android:orientation="horizontal"
     android:paddingBottom="3dp"
     android:paddingTop="3dp"
     >
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="Key"
-        android:textSize="17dp"
+        android:textSize="12dp"
         android:textStyle="bold"
         android:textColor="@color/colorBlack"
         android:id="@+id/country_key"
-        android:layout_weight="1"
+        android:gravity="start"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Value"
-        android:textSize="17dp"
-         android:textColor="@color/colorBlack"
+        android:textSize="13dp"
+        android:textColor="@color/colorBlack"
         android:id="@+id/country_value"
-        android:layout_weight="1"
         />
 </LinearLayout>
