@@ -6,8 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.techgig.countryfinder.Beans.Names;
 import com.techgig.countryfinder.DetailsActivity;
 import com.techgig.countryfinder.R;
@@ -40,6 +42,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.countryName.setText(mNames.get(position).getName());
+        Picasso.with(context).load(mNames.get(position).getFlagUrl()).into(holder.countryIcon);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,10 +62,12 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView countryName;
+        public ImageView countryIcon;
         public ViewHolder(View itemView) {
             super(itemView);
 
             countryName = itemView.findViewById(R.id.country_name);
+            countryIcon = itemView.findViewById(R.id.country_icon);
         }
     }
 }

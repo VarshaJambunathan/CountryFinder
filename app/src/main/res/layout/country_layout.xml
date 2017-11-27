@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Varun"
+                android:text="Country Name"
                 android:textColor="@color/colorBlack"
                 android:textSize="20sp"
                 android:id="@+id/country_name"
