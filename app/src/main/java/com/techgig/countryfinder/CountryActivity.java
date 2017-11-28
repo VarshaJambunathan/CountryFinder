@@ -1,11 +1,16 @@
 package com.techgig.countryfinder;
 
 import android.app.ProgressDialog;
+import android.support.v4.view.MenuCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,7 +30,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class CountryActivity extends AppCompatActivity {
+public class CountryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     static ArrayList<Country> mCountryNames;
     static ArrayList<Names> mNames;
@@ -34,11 +39,14 @@ public class CountryActivity extends AppCompatActivity {
     static RecyclerView.Adapter mCountryAdapter;
     static final String TAG = CountryActivity.class.getName();
     ProgressDialog progressDialog;
+    CountryAdapter countryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_country);
+
+        getSupportActionBar().setTitle("Find Country");
 
         mCountryNames = new ArrayList<>();
         mNames = new ArrayList<>();
@@ -48,13 +56,15 @@ public class CountryActivity extends AppCompatActivity {
         mCountryView.setHasFixedSize(true);
         mCountryLayoutManager = new LinearLayoutManager(this);
         mCountryView.setLayoutManager(mCountryLayoutManager);
+        countryAdapter = new CountryAdapter(this, mNames);
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading . . .");
 
         //Check internet permission
         if(CheckInternet.isNetworkAvailable(this)) {
             loadCountries();
-            mCountryAdapter =  new CountryAdapter(this, mNames);
+            mCountryAdapter = countryAdapter;
             mCountryView.setAdapter(mCountryAdapter);
 
         } else {
@@ -62,6 +72,16 @@ public class CountryActivity extends AppCompatActivity {
 
             //Read data from file
         }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(this);
+        return true;
 
     }
 
@@ -128,4 +148,23 @@ public class CountryActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+
+        newText = newText.toLowerCase();
+        ArrayList<Names> newList = new ArrayList<>();
+        for(Names names : mNames){
+            String name = names.getName().toLowerCase();
+            if(name.contains(newText)) {
+                newList.add(names);
+            }
+        }
+        countryAdapter.setFilter(newList);
+        return true;
+    }
 }

@@ -47,6 +47,8 @@ public class DetailsActivity extends AppCompatActivity {
         mSample = findViewById(R.id.sample);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading . . . ");
+        progressDialog.setCancelable(false);
+
         mDetailsView = (RecyclerView) findViewById(R.id.details_view);
         mDetailsView.setHasFixedSize(true);
         mDetailsLayoutManager = new LinearLayoutManager(this);

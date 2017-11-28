@@ -3,6 +3,7 @@ package com.techgig.countryfinder.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,5 +70,13 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
             countryName = itemView.findViewById(R.id.country_name);
             countryIcon = itemView.findViewById(R.id.country_icon);
         }
+    }
+
+    public void setFilter(ArrayList<Names> newList) {
+
+        mNames = new ArrayList<>();
+        mNames.addAll(newList);
+        //mNames.add(new Names("AAAAAAAAAAA","hello"));
+        notifyDataSetChanged();
     }
 }
