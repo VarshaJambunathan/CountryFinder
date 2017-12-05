@@ -43,7 +43,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.countryName.setText(mNames.get(position).getName());
-        Picasso.with(context).load(mNames.get(position).getFlagUrl()).into(holder.countryIcon);
+        //Picasso.with(context).load(mNames.get(position).getFlagUrl()).into(holder.countryIcon);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

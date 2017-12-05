@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = DetailsActivity.class.getName();
     TextView mSample;
+    private ImageView mCountryFlag;
     ProgressDialog progressDialog;
     private RecyclerView mDetailsView;
     private RecyclerView.LayoutManager mDetailsLayoutManager;
@@ -45,6 +47,7 @@ public class DetailsActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         mSample = findViewById(R.id.sample);
+        mCountryFlag = findViewById(R.id.country_flag);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading . . . ");
         progressDialog.setCancelable(false);
@@ -177,9 +180,13 @@ public class DetailsActivity extends AppCompatActivity {
 
             mDetailsNames = Country.returnHashPairs(country);
 
+            //Set flag
+
+
             //Set DetailsAdapter
             mDetailsAdapter =  new DetailsAdapter(mDetailsNames);
             mDetailsView.setAdapter(mDetailsAdapter);
+            Log.e(TAG, "Adapter set!");
 
         } catch( JSONException e){
             Log.e("DetailsJsonParsing", e.toString());

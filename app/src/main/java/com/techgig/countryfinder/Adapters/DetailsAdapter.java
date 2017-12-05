@@ -40,7 +40,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
         holder.mKey.setText(key);
         holder.mValue.setText(value);
 
-        Log.e("Key-Value Adapter", key + " " + value + "\n");
+        //Log.e("Key-Value Adapter", key + " " + value + "\n");
 
     }
 
