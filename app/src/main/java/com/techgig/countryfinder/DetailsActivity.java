@@ -1,12 +1,16 @@
 package com.techgig.countryfinder;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +21,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 import com.techgig.countryfinder.Adapters.DetailsAdapter;
 import com.techgig.countryfinder.Beans.Country;
 import com.techgig.countryfinder.Beans.Names;
@@ -26,13 +32,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = DetailsActivity.class.getName();
     TextView mSample;
-    private ImageView mCountryFlag;
+    private static ImageView mCountryFlag;
     ProgressDialog progressDialog;
     private RecyclerView mDetailsView;
     private RecyclerView.LayoutManager mDetailsLayoutManager;
@@ -181,7 +190,15 @@ public class DetailsActivity extends AppCompatActivity {
             mDetailsNames = Country.returnHashPairs(country);
 
             //Set flag
+            //Check internet permission
+            if(CheckInternet.isNetworkAvailable(this)) {
+                new HttpImageRequestTask().execute(flag);
 
+            } else {
+                Toast.makeText(this, "Internet Unavailable.", Toast.LENGTH_SHORT).show();
+
+                //Read data from file
+            }
 
             //Set DetailsAdapter
             mDetailsAdapter =  new DetailsAdapter(mDetailsNames);
@@ -191,6 +208,42 @@ public class DetailsActivity extends AppCompatActivity {
         } catch( JSONException e){
             Log.e("DetailsJsonParsing", e.toString());
         }
+
+    }
+
+    private static class HttpImageRequestTask extends AsyncTask<String, Void, Drawable> {
+        @Override
+        protected Drawable doInBackground(String... params) {
+            try {
+
+                Log.e("DetailsActivity", params[0]);
+                final URL url = new URL(params[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = urlConnection.getInputStream();
+                SVG svg = SVGParser. getSVGFromInputStream(inputStream);
+                Drawable drawable = svg.createPictureDrawable();
+                return drawable;
+            } catch (Exception e) {
+                Log.e("MainActivity", e.getMessage(), e);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Drawable drawable) {
+            // Update the view
+            if(drawable != null){
+
+                // Try using your library and adding this layer type before switching your SVG parsing
+                mCountryFlag.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                mCountryFlag.setImageDrawable(drawable);
+            }
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void updateImageView(Drawable drawable){
 
     }
 

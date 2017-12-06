@@ -68,7 +68,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
             super(itemView);
 
             countryName = itemView.findViewById(R.id.country_name);
-            countryIcon = itemView.findViewById(R.id.country_icon);
+            //countryIcon = itemView.findViewById(R.id.country_icon);
         }
     }
 
